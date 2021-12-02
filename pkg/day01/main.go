@@ -30,7 +30,7 @@ func getWindowSum(data []string, idx int, window int) int {
 	return sum
 }
 
-func count_increasing(data []string, window int) int {
+func countIncreasing(data []string, window int) int {
 	increasing_count := 0
 
 	prevSum := 0
@@ -58,9 +58,9 @@ func Run(inputfile string) error {
 		return err
 	}
 
-	log.Infof("Solution for part 1: %d", count_increasing(lines, 1))
+	log.Infof("Solution for part 1: %d", countIncreasing(lines, 1))
 
-	log.Infof("Solution for part 2: %d", count_increasing(lines, 3))
+	log.Infof("Solution for part 2: %d", countIncreasing(lines, 3))
 
 	return nil
 }
