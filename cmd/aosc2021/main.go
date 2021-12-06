@@ -8,6 +8,7 @@ import (
 	"github.com/nandajavarma/aoc2021/pkg/day03"
 	"github.com/nandajavarma/aoc2021/pkg/day04"
 	"github.com/nandajavarma/aoc2021/pkg/day05"
+	"github.com/nandajavarma/aoc2021/pkg/day06"
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 )
@@ -64,6 +65,15 @@ var day5 = &cobra.Command{
 	},
 }
 
+var day6 = &cobra.Command{
+	Use:   "day06",
+	Short: "Solution to day 06 of AoC 2021",
+	Long:  ``,
+	RunE: func(cmd *cobra.Command, args []string) error {
+		return day06.Run(inputFile)
+	},
+}
+
 func init() {
 	rootCmd.PersistentFlags().StringVar(&inputFile, "input", "", "Input file name")
 	rootCmd.MarkPersistentFlagRequired("input")
@@ -75,6 +85,7 @@ func main() {
 	rootCmd.AddCommand(day3)
 	rootCmd.AddCommand(day4)
 	rootCmd.AddCommand(day5)
+	rootCmd.AddCommand(day6)
 
 	if err := rootCmd.Execute(); err != nil {
 		log.WithError(err).Fatal("error in the cli. Exiting")
