@@ -1,6 +1,7 @@
 package day09
 
 import (
+	"sort"
 	"strconv"
 	"strings"
 
@@ -76,45 +77,26 @@ func getNeighborPos(i, j, iBound, jBound int) []coords {
 	return result
 }
 
-// func findBasins(matrix [][]int, neighbours []coords, basinCount int, visited map[coords]bool) int {
-// 	if len(neighbours) == 0 {
-// 		return basinCount
-// 	}
-
-// 	for _, coord := range neighbours {
-// 		if visited[coord] {
-// 			return basinCount
-// 		}
-
-// 		if matrix[coord.x][coord.y] == 9 {
-// 			return basinCount
-// 		}
-// 		log.Infof("Considering coord %v", coord)
-
-// 		visited[coord] = true
-// 		basinCount = findBasins(matrix, getNeighborPos(coord.x, coord.y, len(matrix), len(matrix[0])), basinCount+1, visited)
-// 	}
-
-// 	return basinCount
-// }
-//
-func findBasins(matrix [][]int, neighbours []coords, basinCount int, visited map[coords]bool) int {
+func findBasins(matrix [][]int, point coords) int {
+	neighbours := getNeighborPos(point.x, point.y, len(matrix), len(matrix[0]))
 	if len(neighbours) == 0 {
-		return basinCount
+		return 0
 	}
+	visited := map[coords]bool{}
 
+	basinCount := 0
 	for i := 0; i < len(neighbours); i++ {
-		item := neighbours[i]
-		if visited[item] {
-			return basinCount
+		neighbour := neighbours[i]
+		if visited[neighbour] {
+			continue
 		}
 
-		visited[item] = true
-		if matrix[item.x][item.y] == 9 {
-			return basinCount
+		visited[neighbour] = true
+		if matrix[neighbour.x][neighbour.y] == 9 {
+			continue
 		}
-
-		return findBasins(matrix, getNeighborPos(item.x, item.y, len(matrix), len(matrix[0])), basinCount+1, visited)
+		basinCount++
+		neighbours = append(neighbours, getNeighborPos(neighbour.x, neighbour.y, len(matrix), len(matrix[0]))...)
 	}
 
 	return basinCount
@@ -130,12 +112,10 @@ func isLowest(matrix [][]int, i, j int) bool {
 		}
 	}
 
-	visits := map[coords]bool{}
-	visits[coords{
+	basinlength = append(basinlength, findBasins(matrix, coords{
 		x: i,
 		y: j,
-	}] = true
-	basinlength = append(basinlength, findBasins(matrix, neighborCoords, 1, visits))
+	}))
 
 	return true
 }
@@ -157,6 +137,11 @@ func findLowPoints(matrix [][]int) []coords {
 	return points
 }
 
+func getLargestBins() int {
+	sort.Ints(basinlength)
+	return basinlength[len(basinlength)-1] * basinlength[len(basinlength)-2] * basinlength[len(basinlength)-3]
+}
+
 func Run(inputfile string) error {
 	input, err := filereader.ReadFile(inputfile)
 	if err != nil {
@@ -172,7 +157,7 @@ func Run(inputfile string) error {
 	}
 
 	log.Infof("Solution to problem 1 is: %d", risk)
-	log.Info(basinlength)
+	log.Infof("Solution to problem 2 is: %d", getLargestBins())
 
 	return nil
 }
