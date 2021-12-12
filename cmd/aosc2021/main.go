@@ -14,6 +14,7 @@ import (
 	"github.com/nandajavarma/aoc2021/pkg/day09"
 	"github.com/nandajavarma/aoc2021/pkg/day10"
 	"github.com/nandajavarma/aoc2021/pkg/day11"
+	"github.com/nandajavarma/aoc2021/pkg/day12"
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 )
@@ -124,6 +125,15 @@ var day11Cmd = &cobra.Command{
 	},
 }
 
+var day12Cmd = &cobra.Command{
+	Use:   "day12",
+	Short: "Solution to day 12 of AoC 2021",
+	Long:  ``,
+	RunE: func(cmd *cobra.Command, args []string) error {
+		return day12.Run(inputFile)
+	},
+}
+
 func init() {
 	rootCmd.PersistentFlags().StringVar(&inputFile, "input", "", "Input file name")
 	rootCmd.MarkPersistentFlagRequired("input")
@@ -141,6 +151,7 @@ func main() {
 	rootCmd.AddCommand(day9)
 	rootCmd.AddCommand(day10Cmd)
 	rootCmd.AddCommand(day11Cmd)
+	rootCmd.AddCommand(day12Cmd)
 
 	if err := rootCmd.Execute(); err != nil {
 		log.WithError(err).Fatal("error in the cli. Exiting")
